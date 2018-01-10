@@ -11,7 +11,7 @@ import CoinbaseLabel from '../components/CoinbaseLabel'
 import MetaCoinBalance from '../components/MetaCoinBalance'
 import MetaCoinForm from '../components/MetaCoinForm'
 import TransactionsList from '../components/TransactionsList'
-
+import ReadAbi from '../components/ReadAbi'
 /* Providers
 ** ****************** */
 import withWeb3 from '../components/providers/withWeb3'
@@ -26,6 +26,7 @@ const Index = () => (
     <MetaCoinBalance />
     <MetaCoinForm />
     <TransactionsList />
+    <ReadAbi />
   </main>
 )
 
