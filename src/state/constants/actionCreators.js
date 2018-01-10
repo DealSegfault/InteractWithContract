@@ -1,5 +1,10 @@
 import types from './actionTypes'
 
+export const setFunc = (func) => ({
+  type: 'SET_FUNC',
+  payload: func
+})
+
 export const setWeb3 = web3 => ({
   type: types.WEB3_INITIALIZED,
   payload: web3

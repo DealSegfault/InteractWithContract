@@ -7,6 +7,10 @@ const scopeTypes = (types = [], scope = 'App') => (
   )
 )
 
+const funcTypes = [
+    'SET_FUNC'
+]
+
 const appTypes = [
   'WEB3_INITIALIZED',
   'SET_ACCOUNTS',
@@ -26,6 +30,7 @@ const metaTypes = [
 
 export default {
   ...scopeTypes(appTypes),
+  ...scopeTypes(funcTypes),
   ...scopeTypes(formTypes, 'Form'),
   ...scopeTypes(metaTypes, 'Meta')
 }

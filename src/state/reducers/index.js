@@ -4,11 +4,12 @@ import meta from './meta'
 import formData from './formData'
 import accounts from './accounts'
 import contracts from './contracts'
-
+import selectedFunc from './selectfunc'
 export default combineReducers({
   web3,
   meta,
   formData,
   accounts,
-  contracts
+  contracts,
+  selectedFunc
 })

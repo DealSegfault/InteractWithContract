@@ -27,20 +27,22 @@ class MetaCoinForm extends Component {
     } = this.props
     e.preventDefault()
 
-    MetaCoin.sendCoin.sendTransaction(recipient, amount, {from})
-      .then(txHash => {
-        const getReceipt = () => web3.eth.getTransactionReceiptAsync(txHash)
-          .then(receipt => receipt !== null
-            ? receipt
-            : delay(500).then(getReceipt))
-        return getReceipt()
-      })
-      .then(receipt => MetaCoin.Transfer().formatter(receipt.logs[0]).args)
-      .then(pushTransaction)
-      .then(() => MetaCoin.getBalance.call(from))
-      .then(balance => balance.toString(10))
-      .then(updateBalance)
-      .then(resetForm)
+    if (amount > 0) {
+      MetaCoin.sendCoin.sendTransaction(recipient, amount, {from})
+        .then(txHash => {
+          const getReceipt = () => web3.eth.getTransactionReceiptAsync(txHash)
+            .then(receipt => receipt !== null
+              ? receipt
+              : delay(500).then(getReceipt))
+          return getReceipt()
+        })
+        .then(receipt => MetaCoin.Transfer().formatter(receipt.logs[0]).args)
+        .then(pushTransaction)
+        .then(() => MetaCoin.getBalance.call(from))
+        .then(balance => balance.toString(10))
+        .then(updateBalance)
+        .then(resetForm)
+    }
   }
 
   render () {
