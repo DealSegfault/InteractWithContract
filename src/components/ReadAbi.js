@@ -1,20 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setFunc } from '../state/constants/actionCreators'
 import { abi } from  '../../build/contracts/MetaCoin.json'
+import * as helpers from '../util/helpers'
 
-const findIndex = (abi, func) => {
-  let out = ""
-  abi.map((current, index) => {
-    if (current.name === func)
-      out = index
-  })
-  return out
-}
 
-const sendTransac = () => {
-
-}
 
 class ContractABI extends Component {
   constructor(props) {
@@ -22,48 +11,96 @@ class ContractABI extends Component {
     this.state = {
       name: "None",
       index: -1,
-      inputs: []
+      inputs: [],
+      address: "0xc6cf6f65acc76c632f8c4478e2d360a5cbd6b2c8"
     }
   }
   
   handleClick = () => {
     const current = document.getElementById("list")
     const input = current.options[current.selectedIndex].value
-    const index = findIndex(abi, input)
+    const index = helpers.findIndex(abi, input)
     this.setState({index: index})
     this.setState({inputs: abi[index].inputs})
   }
 
+  handleAddress = () => {
+    const current = document.getElementById("address")
+    const input = current.value
+    this.setState({address: input})
+  }
+
+  handleSubmit = () => {
+    // helpers.callContract(this.state.address, abi, abi[this.state.index], this.state.inputs).then(result => {
+    //   console.log(result)
+    // })
+    let current = ""//document.getElementById("address")
+    let input = ""//current.value
+    let output = []
+    
+    this.state.inputs.map((action, index) => {
+      current = document.getElementById(action.name)
+      input = current.value
+      output.push(input) 
+    })
+
+    console.log(output)
+    console.log(this.state.address, abi[this.state.index].name)
+    this.handleAddress()
+    helpers.callContract(this.state.address, abi, abi[this.state.index].name, output).then(result => {
+      console.log(result)
+    })
+    //this.props.contracts.address == replace by the content of input id="address"
+    //abi current loaded abi
+    //current Function to execute
+    //params of function 
+  }
+
   render() {
-    return (
+
+  const functionlist = abi.map((current, index) => {
+    if (current.name) {
+      return (
+        <option key={index}>{current.name}</option>
+      )
+    }
+  })
+
+  const Inputevent = () => {
+    if (this.state.inputs.length > 0) {
+      return (<div>
+        { 
+          this.state.inputs.map((action, index) => (
+          <div>
+            <p><label key={index}>{action.name}: </label></p>
+            <input type="text" id={action.name} key={index} name={action.name} ></input>
+          </div>))
+        }
+      </div>)
+    }
+    return (<div></div>)
+  }
+
+  return (
   <div>
+      Address of the contract:
+      {/* <form onSubmit={this.handleSubmit}>  */}
+      <input id="address" name="address" placeholder="0xc6cf6f65acc76c632f8c4478e2d360a5cbd6b2c8"/>
       <select id="list" onChange={() => this.handleClick()}>
-      { abi.map((current, index) => {
-          if (current.name) {
-            return (
-              <option key={index}>{current.name}</option>
-            )
-          }
-        })
-      }
-      </select>
-      { this.state.inputs.length > 0 ? <FuncInputs inputs={this.state.inputs} /> : console.log("nope")
-      }
-      <button onClick={this.sendTransac()}>Action</button>
+        {functionlist}
+      </select>      
+      <Inputevent />
+      <input type='submit' value='Now!' onClick={() => this.handleSubmit()}/>
+      {/* </form> */}
   </div>)
   }
 }
 
-const FuncInputs = (inputs) => (
-  <div>
-    { 
-      inputs.inputs.map(action => (
-      <div>
-        <p><label>{action.name}: </label></p>
-        <input type="text" name={action.type} ></input>
-      </div>))
-    }
-  </div>
-)
+const mapStateToProps = state => ({
+  contracts: state.contracts
+})
 
-export default ContractABI
+export default connect(
+  mapStateToProps,
+)(ContractABI)
+
