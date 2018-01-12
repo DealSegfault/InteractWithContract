@@ -24,11 +24,11 @@ contract MetaCoin {
 		return true;
 	}
 
-	function getBalanceInEth(address addr) returns(uint){
+	function getBalanceInEth(address addr) public constant  returns(uint){
 		return ConvertLib.convert(getBalance(addr),2);
 	}
 
-	function getBalance(address addr) returns(uint) {
+	function getBalance(address addr) public constant  returns(uint) {
 		return balances[addr];
 	}
 }

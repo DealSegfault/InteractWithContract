@@ -12,7 +12,7 @@ class ContractABI extends Component {
       name: "None",
       index: -1,
       inputs: [],
-      address: "0xc6cf6f65acc76c632f8c4478e2d360a5cbd6b2c8"
+      address: "0xcf0a3560d0d794094aff359da0e7cd7acef61c31"
     }
   }
   
@@ -44,8 +44,8 @@ class ContractABI extends Component {
       output.push(input) 
     })
 
-    console.log(output)
-    console.log(this.state.address, abi[this.state.index].name)
+    // console.log(output)
+    // console.log(this.state.address, abi[this.state.index].name)
     this.handleAddress()
     helpers.callContract(this.state.address, abi, abi[this.state.index].name, output).then(result => {
       console.log(result)
@@ -85,7 +85,7 @@ class ContractABI extends Component {
   <div>
       Address of the contract:
       {/* <form onSubmit={this.handleSubmit}>  */}
-      <input id="address" name="address" placeholder="0xc6cf6f65acc76c632f8c4478e2d360a5cbd6b2c8"/>
+      <input id="address" name="address" placeholder="0xcf0a3560d0d794094aff359da0e7cd7acef61c31"/>
       <select id="list" onChange={() => this.handleClick()}>
         {functionlist}
       </select>      

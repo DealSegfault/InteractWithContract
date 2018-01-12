@@ -36,33 +36,28 @@ export const callContract = (address, abi, currentFunction, params) => {
     return new Promise((resolve, reject) => {
         getEtherAdress().then(coinbase => {
             getTokenContract(address, abi).then(contract => {
-                contract[currentFunction].call(...params, (error, result) => {
+                console.log(abi[findIndex(abi, currentFunction)].constant)
+                if (abi[findIndex(abi, currentFunction)].constant == true) {
+                    contract[currentFunction].call(...params, (error, result) => {
+                        if (error) {
+                            reject(error)
+                        }
+                        resolve(result.valueOf())
+                    })
+                }
+               else {
+                   console.log(currentFunction, ...params)
+                contract[currentFunction].sendTransaction(...params, {from: coinbase}, (error, result) => {
                     if (error) {
-                    	reject(error)
+                        reject(error)
                     }
                     resolve(result.valueOf())
                 })
+               }
             })
         })
     })
 }
-
-// export const getMetaBalance = (address, abi) => {
-//     return new Promise((resolve, reject) => {
-//         getEtherAdress().then(adress => {
-//             getTokenContract(address, abi).then(contract => {
-//                 contract.getBalance.call(adress, (error, result) => {
-//                     if (error) {console.log(result.valueOf())
-//                     resolve(result.valueOf())
-//                     	reject(error)
-//                     }
-                    
-//                 })
-//             })
-//        })
-//     })
-// }
-
 
 export const getEtherAdress = () => {
     return new Promise((resolve, reject) => {
